@@ -335,7 +335,7 @@ void fgcrdfd(double ***inp, int maxz, int xbc, int ybc, int bs,
     a[0][1]  = S_double_double(tDd01, tDk01, N);
     a[0][1] += S_double_double(tDd12, tDk12, N);
     a[0][1] += S_double_double(tDd20, tDk20, N);
-    a[1][1] += S_double_double(tDk01, tDk01, N);
+    a[1][1]  = S_double_double(tDk01, tDk01, N);
     a[1][1] += S_double_double(tDk12, tDk12, N);
     a[1][1] += S_double_double(tDk20, tDk20, N);
     b[0]     = S_double_double(tD01,  tDd01, N);
@@ -519,7 +519,7 @@ double S_double_double(double **a, double **b, int N)
   double E, c, r;
   
   /***** 定数 *****/
-  c = 0.70;
+  c = 0.7;
 
   /***** 重み w[][] 設定 *****/
   if (first == 1) {
@@ -528,23 +528,22 @@ double S_double_double(double **a, double **b, int N)
       if (j < N / 2) {
 	jj = j;
       } else {
-	jj = N - j;
+	jj = N - j - 1;
       }
       for(i = 0 ; i < N ; i++) {
 	if (i < N / 2) {
 	  ii = i;
 	} else {
-	  ii = N - i;
+	  ii = N - i - 1;
 	}
 	r = sqrt((double)(ii * ii + jj * jj));
 	w[i][j] = tanh(c * r);
       }
     }
-
-    /*
-    {    
-      FILE *fp;
     
+    /*{    
+      FILE *fp;
+      
       fp = fopen("w.dat", "w");
       for(j = 0 ; j < N ; j++) {
 	for(i = 0 ; i < N ; i++) {
@@ -553,8 +552,8 @@ double S_double_double(double **a, double **b, int N)
 	fprintf(fp, "\n");
       }
       fclose(fp);
-    }
-    */
+      }*/
+   
       
     first = 0;
   }
